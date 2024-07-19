@@ -1,5 +1,3 @@
-"use client";
-
 import TripeSearch from "./components/TripSearch";
 import QuickSearch from "./components/QuickSearch";
 import RecommendedTrips from "./components/RecommendedTrips";

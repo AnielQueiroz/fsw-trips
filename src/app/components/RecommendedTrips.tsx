@@ -1,28 +1,16 @@
 import React, { useEffect, useState } from "react";
 import TripItem from "@/components/TripItem";
+import { prisma } from "@/lib/prisma";
 import { Trip } from "@prisma/client";
 
-const getTrips = async () => {
-    const trips = await fetch("http://localhost:3000/hello").then((res) => res.json());
+async function getTrips() {
+    const trips = await prisma.trip.findMany({});
+
     return trips;
-};
+}
 
-const RecommendedTrips = () => {
-    const [trips, setTrips] = useState<Trip[]>([]);
-    const [error, setError] = useState(null);
-
-    useEffect(() => {
-        const fetchTrips = async () => {
-            try {
-                const trips = await getTrips();
-                setTrips(trips);
-            } catch (err) {
-                console.log(err);
-            }
-        };
-
-        fetchTrips();
-    }, []);
+const RecommendedTrips = async () => {
+    const data = await getTrips();
 
     return (
         <div className="container mx-auto p-5">
@@ -33,7 +21,7 @@ const RecommendedTrips = () => {
             </div>
 
             <div className="flex flex-col items-center mt-5 gap-5">
-                {trips.map((trip: Trip) => (
+                {data.map((trip: Trip) => (
                     <TripItem key={trip.id} trip={trip} />
                 ))}
             </div>
